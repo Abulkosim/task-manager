@@ -30,6 +30,9 @@ const emitNewTask = () => {
     } else if (newTaskTitle.value.toLowerCase().includes('ertaga')) {
       newTaskData.title = newTaskTitle.value.replace('ertaga', '')
       newTaskData.deadline = 'ertaga'
+    } else {
+      newTaskData.title = newTaskTitle.value
+      newTaskData.deadline = newTaskDeadline.value
     }
     console.log(newTaskData)
     emit('newTask', newTaskData);
