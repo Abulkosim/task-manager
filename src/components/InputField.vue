@@ -17,13 +17,20 @@
 import { ref } from 'vue'
 
 const newTaskTitle = ref('');
+const newTaskDate = ref('');
+const newTaskTime = ref('');
 const newTaskDeadline = ref('bugun');
 
 const emit = defineEmits(['newTask']);
 
+const timePattern = /\b(?:[0-1]?\d|2[0-3]):[0-5]\d\b/
+const datePattern = /\b(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}\b/
+
 const emitNewTask = () => {
   if (newTaskTitle.value.trim()) {
     const newTaskData = {}
+    newTaskData.title = newTaskTitle.value
+
     if (newTaskTitle.value.toLowerCase().includes('bugun')) {
       newTaskData.title = newTaskTitle.value.replace('bugun', '')
       newTaskData.deadline = 'bugun'
@@ -31,13 +38,30 @@ const emitNewTask = () => {
       newTaskData.title = newTaskTitle.value.replace('ertaga', '')
       newTaskData.deadline = 'ertaga'
     } else {
-      newTaskData.title = newTaskTitle.value
       newTaskData.deadline = newTaskDeadline.value
     }
+
+    const timeMatch = newTaskTitle.value.match(timePattern);
+    if (timeMatch) {
+      newTaskTime.value = timeMatch[0];
+      newTaskTitle.value = newTaskTitle.value.replace(timePattern, '').trim();
+    }
+    newTaskData.time = newTaskTime.value
+
+    const dateMatch = newTaskTitle.value.match(datePattern);
+    if (dateMatch) {
+      newTaskDate.value = dateMatch[0];
+      newTaskTitle.value = newTaskTitle.value.replace(datePattern, '').trim();
+      newTaskData.deadline = 'keyin'
+    }
+    newTaskData.date = newTaskDate.value
+
     console.log(newTaskData)
     emit('newTask', newTaskData);
     newTaskTitle.value = '';
     newTaskDeadline.value = 'bugun';
+    newTaskTime.value = '';
+    newTaskDate.value = '';
   }
 };
 

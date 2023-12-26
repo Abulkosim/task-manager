@@ -5,9 +5,9 @@
     <InputField @newTask="addTask" />
     <CurrentTime />
     <div v-if="tasks.length">
-      <TaskGroup v-if="tasksBugun.length" :tasks="tasksBugun" @updateTask="handleUpdate" title="Bugun" />
-      <TaskGroup v-if="tasksErtaga.length" :tasks="tasksErtaga" @updateTask="handleUpdate" title="Ertaga" />
-      <TaskGroup v-if="tasksKeyin.length" :tasks="tasksKeyin" @updateTask="handleUpdate" title="Keyin" />
+      <TaskGroup v-if="tasksBugun.length" :tasks="tasksBugun" title="Bugun" />
+      <TaskGroup v-if="tasksErtaga.length" :tasks="tasksErtaga" title="Ertaga" />
+      <TaskGroup v-if="tasksKeyin.length" :tasks="tasksKeyin" title="Keyin" />
     </div>
     <div v-if="tasks.length" class="w-full h-[1px] bg-gray-300 my-8"></div>
     <div v-if="tasks.length" class="text-right my-4 text-gray-500 italic text-lg">
@@ -30,19 +30,13 @@ const tasks = ref([
   // { id: 4, title: "Buy groceries", deadline: "keyin", completed: false, date: '12.27.2023', time: '12:00' },
 ])
 
-function handleUpdate(taskUpd) {
-  const index = tasks.value.findIndex(task => task.id == taskUpd.id)
-
-  if (index != -1) {
-    tasks.value[index] = taskUpd
-  }
-}
-
 const addTask = (addedTask) => {
   const newTask = {
     id: tasks.value.length + 1,
     title: addedTask.title,
     deadline: addedTask.deadline,
+    time: addedTask.time,
+    date: addedTask.date,
     completed: false
   };
   tasks.value.push(newTask);
