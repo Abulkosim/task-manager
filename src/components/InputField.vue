@@ -29,34 +29,45 @@ const datePattern = /\b(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}\b/
 const emitNewTask = () => {
   if (newTaskTitle.value.trim()) {
     const newTaskData = {}
-    newTaskData.title = newTaskTitle.value
+
+    let tempTitle = newTaskTitle.value;
 
     if (newTaskTitle.value.toLowerCase().includes('bugun')) {
-      newTaskData.title = newTaskTitle.value.replace('bugun', '')
       newTaskData.deadline = 'bugun'
+      newTaskTime.value = ('0' + (new Date().getHours() + 1) % 24).slice(-2) + ':00'
+      newTaskData.time = newTaskTime.value
+      tempTitle = tempTitle.replace('bugun', '');
     } else if (newTaskTitle.value.toLowerCase().includes('ertaga')) {
-      newTaskData.title = newTaskTitle.value.replace('ertaga', '')
+      tempTitle = tempTitle.replace('ertaga', '');
       newTaskData.deadline = 'ertaga'
+      newTaskTime.value = '09:00'
+      newTaskData.time = newTaskTime.value
     } else {
       newTaskData.deadline = newTaskDeadline.value
+      newTaskTime.value = ('0' + (new Date().getHours() + 1) % 24).slice(-2) + ':00'
+      newTaskData.time = newTaskTime.value
     }
 
-    const timeMatch = newTaskTitle.value.match(timePattern);
-    if (timeMatch) {
-      newTaskTime.value = timeMatch[0];
-      newTaskTitle.value = newTaskTitle.value.replace(timePattern, '').trim();
-    }
-    newTaskData.time = newTaskTime.value
-
-    const dateMatch = newTaskTitle.value.match(datePattern);
+    const dateMatch = tempTitle.match(datePattern);
     if (dateMatch) {
       newTaskDate.value = dateMatch[0];
-      newTaskTitle.value = newTaskTitle.value.replace(datePattern, '').trim();
+      tempTitle = tempTitle.replace(datePattern, '').trim();
       newTaskData.deadline = 'keyin'
+      newTaskTime.value = '09:00'
+      newTaskData.time = newTaskTime.value
     }
     newTaskData.date = newTaskDate.value
 
-    console.log(newTaskData)
+    const timeMatch = tempTitle.match(timePattern);
+    if (timeMatch) {
+      newTaskTime.value = timeMatch[0];
+      tempTitle = tempTitle.replace(timePattern, '').trim();
+    }
+    newTaskData.time = newTaskTime.value
+
+    newTaskData.title = tempTitle.trim();
+
+
     emit('newTask', newTaskData);
     newTaskTitle.value = '';
     newTaskDeadline.value = 'bugun';

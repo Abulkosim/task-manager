@@ -23,12 +23,7 @@ import InputField from './components/InputField.vue';
 import CurrentTime from './components/CurrentTime.vue';
 import TaskGroup from './components/TaskGroup.vue';
 
-const tasks = ref([
-  // { id: 1, title: "Buy groceries", deadline: "bugun", completed: false, date: '12.27.2023', time: '12:00' },
-  // { id: 2, title: "Buy asdf", deadline: "ertaga", completed: true, date: '12.27.2023', time: '12:00' },
-  // { id: 3, title: "Buy asdfwr234", deadline: "bugun", completed: false, date: '12.27.2023', time: '12:00' },
-  // { id: 4, title: "Buy groceries", deadline: "keyin", completed: false, date: '12.27.2023', time: '12:00' },
-])
+const tasks = ref([])
 
 const addTask = (addedTask) => {
   const newTask = {
