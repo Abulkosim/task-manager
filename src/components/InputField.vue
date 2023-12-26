@@ -37,8 +37,10 @@ const emitNewTask = () => {
       newTaskTime.value = ('0' + (new Date().getHours() + 1) % 24).slice(-2) + ':00'
       newTaskData.time = newTaskTime.value
       tempTitle = tempTitle.replace('bugun', '');
+      tempTitle = tempTitle.replace('Bugun', '');
     } else if (newTaskTitle.value.toLowerCase().includes('ertaga')) {
       tempTitle = tempTitle.replace('ertaga', '');
+      tempTitle = tempTitle.replace('Ertaga', '');
       newTaskData.deadline = 'ertaga'
       newTaskTime.value = '09:00'
       newTaskData.time = newTaskTime.value
